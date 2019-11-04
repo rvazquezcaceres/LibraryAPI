@@ -12,4 +12,12 @@ class book_controller extends Controller
         $books = book::all();
         dd($books);
     }
+
+    public function postBooks (Request $request)
+    {
+        $books = new book;
+        $books->title = $request->title;
+        $books->description = $request->description;
+        $books->save();
+    }
 }

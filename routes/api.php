@@ -19,3 +19,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::apiResource('books', 'book_controller');
 Route::get('getBooks', 'book_controller@getBooks');
+Route::get('postBooks', 'book_controller@postBooks');
+
