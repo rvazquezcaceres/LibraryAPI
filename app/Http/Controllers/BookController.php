@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Book;
 
 class BookController extends Controller
 {
@@ -21,9 +22,9 @@ class BookController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        
     }
 
     /**
@@ -43,9 +44,10 @@ class BookController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Book $books)
     {
-        //
+        $books = Book::all();
+        dd($books);
     }
 
     /**
@@ -66,9 +68,12 @@ class BookController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Book $books)
     {
-        //
+        $books = new Book;
+        $books->title = $request->title;
+        $books->description = $request->description;
+        $books->save();
     }
 
     /**
