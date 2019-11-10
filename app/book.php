@@ -8,4 +8,9 @@ class Book extends Model
 {
     protected $table = 'books';
     protected $fillable = ['title', 'description'];
+    
+    public function users()
+    {
+        return $this->belongsToMany('App\User');
+    }
 }

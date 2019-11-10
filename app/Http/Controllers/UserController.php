@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Illuminate\Http\Request;
-use App\Book;
 
-class BookController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -22,9 +22,9 @@ class BookController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function create()
     {
-        
+        //
     }
 
     /**
@@ -33,12 +33,13 @@ class BookController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function bookStore(Request $request)
+    public function userStore(Request $request)
     {
-        $books = new Book;
-        $books->title = $request->title;
-        $books->description = $request->description;
-        $books->save();
+        $users = new User;
+        $users->name = $request->name;
+        $users->email = $request->email;
+        $users->password = $request->password;
+        $users->save();
     }
 
     /**
@@ -47,10 +48,10 @@ class BookController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function bookhow(Book $books)
+    public function userShow(User $users)
     {
-        $books = Book::all();
-        dd($books);
+        $users = User::all();
+        dd($users);
     }
 
     /**
@@ -71,9 +72,9 @@ class BookController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Book $books)
+    public function update(Request $request, $id)
     {
-      
+        //
     }
 
     /**
