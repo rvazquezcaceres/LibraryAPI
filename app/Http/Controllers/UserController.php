@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use Illuminate\Http\Request;
 use Firebase\JWT\JWT;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -36,7 +37,7 @@ class UserController extends Controller
      */
     public function userStore(Request $request) //Inyeccion de dependencias
     {
-        $users = new User;
+        $users = new User();
         $users->name = $request->name;
         $users->email = $request->email;
         $users->password = $request->password;
@@ -45,11 +46,9 @@ class UserController extends Controller
         $key = "akqi38423rfnc2u323895f,34tc3tc·`43tc3";
         $data_token = [
             "email" => $users->email,
-            "password" => $users->password
         ];
 
         $token = JWT::encode($data_token, $key);
-
     }
 
     /**
@@ -96,5 +95,33 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function login(Request $request)
+    {
+        $users = User::all('email');
+        foreach ($users as $key => $email)
+        {
+            print($email);
+            print($request->email);
+            if ($request->email == $email)
+            {
+                print("hola");
+            }
+            else
+            {
+                print("No hay coincidencia");
+            }
+        }
+
+        /*if ($request->email == $user->email)
+        {
+            print("hola");
+        } else 
+        {
+            print("adios");
+        }*/
+
+        //$decoded = JWT::decode($token, $key, array('HS256'));
     }
 }
