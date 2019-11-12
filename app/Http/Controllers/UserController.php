@@ -49,6 +49,10 @@ class UserController extends Controller
         ];
 
         $token = JWT::encode($data_token, $key);
+        var_dump($token);
+        return response()->json([
+            "token" => $token
+        ], 200);
     }
 
     /**
@@ -99,12 +103,12 @@ class UserController extends Controller
 
     public function login(Request $request)
     {
+        
         $users = User::all('email');
-        foreach ($users as $key => $email)
+        foreach ($users as $key => $user)
         {
-            print($email);
-            print($request->email);
-            if ($request->email == $email)
+            //var_dump($user);
+            if ($request->email == $user->email)
             {
                 print("hola");
             }
@@ -113,15 +117,5 @@ class UserController extends Controller
                 print("No hay coincidencia");
             }
         }
-
-        /*if ($request->email == $user->email)
-        {
-            print("hola");
-        } else 
-        {
-            print("adios");
-        }*/
-
-        //$decoded = JWT::decode($token, $key, array('HS256'));
     }
 }
