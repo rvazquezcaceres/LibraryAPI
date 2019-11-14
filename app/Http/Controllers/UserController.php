@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use App\User;
 use Illuminate\Http\Request;
 use Firebase\JWT\JWT;
-use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+    private $key = "example-key";
     /**
      * Display a listing of the resource.
      *
@@ -37,22 +37,18 @@ class UserController extends Controller
      */
     public function userStore(Request $request) //Inyeccion de dependencias
     {
-        $users = new User();
-        $users->name = $request->name;
-        $users->email = $request->email;
-        $users->password = $request->password;
-        $users->save();
+        $user = new User();
+        $user->register($request);
 
-        $key = "akqi38423rfnc2u323895f,34tc3tc·`43tc3";
         $data_token = [
-            "email" => $users->email,
+            "email" => $user->email,
         ];
 
-        $token = JWT::encode($data_token, $key);
-        var_dump($token);
+        $token = JWT::encode($data_token, $this->key);
+
         return response()->json([
             "token" => $token
-        ], 200);
+        ], 201);
     }
 
     /**
@@ -110,12 +106,27 @@ class UserController extends Controller
             //var_dump($user);
             if ($request->email == $user->email)
             {
-                print("hola");
+                print(" Si ");
             }
             else
             {
-                print("No hay coincidencia");
+                print(" No ");
             }
         }
+        /*
+        User::find();
+        Buscar el usuario por email 
+        Comprobas que user  de request y email y password de user son iguales
+        si son iguales tengo que codificar el token 
+        despues devolver la respuesta json con el token y un codigo 200
+        si son iguales devolver la respuesta json con codigo 401
+        */
+
+
+
+
+
+
+
     }
 }
