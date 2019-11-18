@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use Illuminate\Http\Request;
 use Firebase\JWT\JWT;
+use App\Helper\Token;
 
 class UserController extends Controller
 {
@@ -44,10 +45,11 @@ class UserController extends Controller
             "email" => $user->email,
         ];
 
-        $token = JWT::encode($data_token, $this->key);
+        $token = new Token($data_token);
+        $tokenCode = $token->encode();
 
         return response()->json([
-            "token" => $token
+            "token" => $tokenCode
         ], 201);
     }
 
@@ -99,20 +101,25 @@ class UserController extends Controller
 
     public function login(Request $request)
     {
-        
-        $users = User::all('email');
+    
+        $users = User::all('email', 'password');
+        $this->token = new Token();
+        $tokenCode = $this->token->encode();
         foreach ($users as $key => $user)
         {
             //var_dump($user);
-            if ($request->email == $user->email)
+            if (($request->email == $user->email) && ($request->password == $user->password))
             {
-                print(" Si ");
+                return response()->json([
+                    "token" => $tokenCode
+                ], 201);
             }
             else
             {
                 print(" No ");
             }
         }
+
         /*
         User::find();
         Buscar el usuario por email 
@@ -121,12 +128,6 @@ class UserController extends Controller
         despues devolver la respuesta json con el token y un codigo 200
         si son iguales devolver la respuesta json con codigo 401
         */
-
-
-
-
-
-
 
     }
 }
