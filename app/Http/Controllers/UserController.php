@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use App\User;
 use Illuminate\Http\Request;
 use Firebase\JWT\JWT;
-use Illuminate\Support\Facades\Auth;
+use App\Helper\Token;
 
 class UserController extends Controller
 {
+    private $key = "example-key";
     /**
      * Display a listing of the resource.
      *
@@ -37,22 +38,27 @@ class UserController extends Controller
      */
     public function userStore(Request $request) //Inyeccion de dependencias
     {
-        $users = new User();
-        $users->name = $request->name;
-        $users->email = $request->email;
-        $users->password = $request->password;
-        $users->save();
+        $user = new User();
+        $user->register($request);
 
-        $key = "akqi38423rfnc2u323895f,34tc3tc·`43tc3";
         $data_token = [
-            "email" => $users->email,
+            "email" => $user->email,
         ];
 
+<<<<<<< HEAD
         $token = JWT::encode($data_token, $key);
 
         return response()->json([
             "token" => $token
         ]);
+=======
+        $token = new Token($data_token);
+        $tokenCode = $token->encode();
+
+        return response()->json([
+            "token" => $tokenCode
+        ], 201);
+>>>>>>> ff732ea1fa76eab63255dd381e2a007d2d73c7cc
     }
 
     /**
@@ -103,29 +109,42 @@ class UserController extends Controller
 
     public function login(Request $request)
     {
+<<<<<<< HEAD
         $users = User::all('email');
         foreach ($users as $key => $user)
         {
             print($user->email);
             print($request->email);
             if ($request->email == $user->email)
+=======
+    
+        $users = User::all('email', 'password');
+        $this->token = new Token();
+        $tokenCode = $this->token->encode();
+        foreach ($users as $key => $user)
+        {
+            //var_dump($user);
+            if (($request->email == $user->email) && ($request->password == $user->password))
+>>>>>>> ff732ea1fa76eab63255dd381e2a007d2d73c7cc
             {
-                print("hola");
+                return response()->json([
+                    "token" => $tokenCode
+                ], 201);
             }
             else
             {
-                print("No hay coincidencia");
+                print(" No ");
             }
         }
 
-        /*if ($request->email == $user->email)
-        {
-            print("hola");
-        } else 
-        {
-            print("adios");
-        }*/
+        /*
+        User::find();
+        Buscar el usuario por email 
+        Comprobas que user  de request y email y password de user son iguales
+        si son iguales tengo que codificar el token 
+        despues devolver la respuesta json con el token y un codigo 200
+        si son iguales devolver la respuesta json con codigo 401
+        */
 
-        //$decoded = JWT::decode($token, $key, array('HS256'));
     }
 }
