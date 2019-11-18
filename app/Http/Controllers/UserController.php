@@ -49,6 +49,10 @@ class UserController extends Controller
         ];
 
         $token = JWT::encode($data_token, $key);
+
+        return response()->json([
+            "token" => $token
+        ]);
     }
 
     /**
@@ -100,11 +104,11 @@ class UserController extends Controller
     public function login(Request $request)
     {
         $users = User::all('email');
-        foreach ($users as $key => $email)
+        foreach ($users as $key => $user)
         {
-            print($email);
+            print($user->email);
             print($request->email);
-            if ($request->email == $email)
+            if ($request->email == $user->email)
             {
                 print("hola");
             }
