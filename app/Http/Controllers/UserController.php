@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Book;
 use Illuminate\Http\Request;
-use Firebase\JWT\JWT;
 use App\Helper\Token;
+
 
 class UserController extends Controller
 {
-    private $key = "example-key";
+
     /**
      * Display a listing of the resource.
      *
@@ -101,6 +102,7 @@ class UserController extends Controller
     public function login(Request $request)
     {
     
+        /*
         $users = User::all('email', 'password');
         $this->token = new Token();
         $tokenCode = $this->token->encode();
@@ -115,11 +117,48 @@ class UserController extends Controller
             }
             else
             {
-                print(" No ");
+                return response()->json([
+                    "token" => "error"
+                ], 401);
             }
+            
+        }
+        */
+
+        $data_token = [
+            'email' => $request->email,
+        ];
+
+        $user = User::where($data_token)->first();
+        
+        if($user->password == $request->password)
+        {
+            $token = new Token($data_token);
+            $tokenEncode = $token->encode();
+    
+            return response()->json([
+                "token" => $tokenEncode
+            ], 200);
         }
 
-        /*
+        return response()->json([
+            "message" => "Unauthorized"
+        ],401);
+
+
+
+    }
+
+    public function lend(Request $request)
+    {
+        $user = User::find($request->user_id);
+        $book = Book::find($request->book_id);
+        $user->books()->attach($book);
+    }
+
+}
+
+/*
         User::find();
         Buscar el usuario por email 
         Comprobas que user  de request y email y password de user son iguales
@@ -127,6 +166,3 @@ class UserController extends Controller
         despues devolver la respuesta json con el token y un codigo 200
         si son iguales devolver la respuesta json con codigo 401
         */
-
-    }
-}
