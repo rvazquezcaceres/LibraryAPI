@@ -17,11 +17,16 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::apiResource('books', 'BookController');
-Route::get('bookShow', 'BookController@bookShow');
-Route::post('bookStore', 'BookController@bbokStore');
 
 Route::apiResource('users', 'UserContoller');
 Route::get('userShow', 'UserController@userShow');
 Route::post('userStore', 'UserController@userStore');
 Route::post('login', 'UserController@login');
+Route::post('users/lend', 'UsersController@lend');
+
+
+Route::group(['middleware' => ['auth']], function ()
+{
+    Route::apiResource('books', 'BooksController');
+    Route::post('store', 'BookController@store');
+});
