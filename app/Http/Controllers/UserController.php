@@ -101,23 +101,6 @@ class UserController extends Controller
 
     public function login(Request $request)
     {
-    
-        //$users = User::all();
-        
-        // foreach ($users as $key => $user)
-        // {
-        //     //var_dump($user);
-        //     if (($request->email == $user->email) && ($request->password == $user->password))
-        //     {
-
-        //         $this->token = new Token();
-        //         $tokenCode = $this->token->encode();
-
-        //         return response()->json([
-        //             "token" => $tokenCode
-        //         ], 201);
-        //     }
-        // }
 
         $data_token = [
             'email' => $request->email
@@ -137,6 +120,16 @@ class UserController extends Controller
         return response()->json([
             "message" => "Unauthorized"
         ], 401);
+    }
+
+    public function lend(Request $request)
+    {
+        $token = new Token();
+        $header_authorization = $request->header('Authorization');
+        $data = $token->decode($header_authorization);
+        $user = User::where('email', $data->email)->first();
+        $book = Book::where('id', $request->id_book)->first();
+        $user->books()->attach($book);
     }
 }
 /*

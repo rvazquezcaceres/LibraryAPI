@@ -22,11 +22,12 @@ Route::apiResource('users', 'UserContoller');
 Route::get('userShow', 'UserController@userShow');
 Route::post('userStore', 'UserController@userStore');
 Route::post('login', 'UserController@login');
+Route::post('lend', 'UserController@lend');
 
 
 Route::group(['middleware' => ['auth']], function ()
 {
     Route::apiResource('books', 'BooksController');
     Route::post('store', 'BookController@store');
-    Route::post('users/lend', 'UsersController@lend');
+    Route::post('lend', 'UserController@lend');
 });

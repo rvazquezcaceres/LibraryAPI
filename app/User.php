@@ -25,7 +25,7 @@ class User extends Model
 
     public function books()
     {
-        return $this->belongsToMany('App\Book', 'user_lend_books');
+        return $this->belongsToMany('App\Book', 'lend');
     }
     
     public function register(Request $request)
