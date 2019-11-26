@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Book;
 use Illuminate\Http\Request;
-use Firebase\JWT\JWT;
 use App\Helper\Token;
+
 
 class UserController extends Controller
 {
-    private $key = "example-key";
+
     /**
      * Display a listing of the resource.
      *
@@ -133,12 +134,12 @@ class UserController extends Controller
                 "token" => $tokenCode
             ], 200);
         }
-
         return response()->json([
             "message" => "Unauthorized"
         ], 401);
-
-        /*
+    }
+}
+/*
         User::find();
         Buscar el usuario por email 
         Comprobas que user  de request y email y password de user son iguales
@@ -146,6 +147,3 @@ class UserController extends Controller
         despues devolver la respuesta json con el token y un codigo 200
         si son iguales devolver la respuesta json con codigo 401
         */
-
-    }
-}

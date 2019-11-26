@@ -35,10 +35,21 @@ class BookController extends Controller
      */
     public function bookStore(Request $request)
     {
-        $books = new Book;
-        $books->title = $request->title;
-        $books->description = $request->description;
-        $books->save();
+        $book = new Book;
+        $book->title = $request->title;
+        $book->description = $request->description;
+        $book->save();
+
+        $token_header = $request->header('Authorization');
+        $token = new Token();
+        $data = $token->decode($token_header);
+        $data->email;
+
+        //obtener de la cabecera el token
+        //decodificar el token
+        //comprobar en bse de datoa si el emial existe
+        //si existe estamos
+        //si no existe no estamos
     }
 
     /**
