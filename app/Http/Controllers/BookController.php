@@ -47,7 +47,7 @@ class BookController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function bookhow(Book $books)
+    public function bookShow(Book $books)
     {
         $books = Book::all();
         dd($books);

@@ -101,23 +101,42 @@ class UserController extends Controller
     public function login(Request $request)
     {
     
-        $users = User::all('email', 'password');
-        $this->token = new Token();
-        $tokenCode = $this->token->encode();
-        foreach ($users as $key => $user)
+        //$users = User::all();
+        
+        // foreach ($users as $key => $user)
+        // {
+        //     //var_dump($user);
+        //     if (($request->email == $user->email) && ($request->password == $user->password))
+        //     {
+
+        //         $this->token = new Token();
+        //         $tokenCode = $this->token->encode();
+
+        //         return response()->json([
+        //             "token" => $tokenCode
+        //         ], 201);
+        //     }
+        // }
+
+        $data_token = [
+            'email' => $request->email
+        ];
+
+        $user = User::where($data_token)->first();
+        
+        if($user->password == $request->password)
         {
-            //var_dump($user);
-            if (($request->email == $user->email) && ($request->password == $user->password))
-            {
-                return response()->json([
-                    "token" => $tokenCode
-                ], 201);
-            }
-            else
-            {
-                print(" No ");
-            }
+            $token = new Token($data_token);
+            $tokenCode = $token->encode();
+
+            return response()->json([
+                "token" => $tokenCode
+            ], 200);
         }
+
+        return response()->json([
+            "message" => "Unauthorized"
+        ], 401);
 
         /*
         User::find();
